@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace ProgrammingPracticeCourseWork
@@ -20,9 +20,17 @@ namespace ProgrammingPracticeCourseWork
                     switch(input[1])
                     {
                         case "galaxy":
+                            string[] posGalTypes = {"elliptical", "lenticular", "spiral", "irregular"};
                             Galaxy newGal = new Galaxy();
                             newGal.Name = inp.Split('[')[1].Split(']')[0];
-                            newGal.Type = inp.Split(']')[1].Split(' ')[1];
+                            if (Array.Exists(posGalTypes, element => element == inp.Split(']')[1].Split(' ')[1]))
+                            {
+                                newGal.Type = inp.Split(']')[1].Split(' ')[1];
+                            }
+                            else 
+                            {
+                                newGal.Type = "unknown";
+                            }
                             newGal.Age = (inp.Split(']')[1].Split(' ')[2]);
                             galList.Add(newGal);
                                 break;
@@ -34,10 +42,19 @@ namespace ProgrammingPracticeCourseWork
                             starList.Add(newStar);
                                 break;
                         case "planet":
+                            string[] posPlTypes = {"terrestrial", "giant planet", "ice giant", "mesoplanet", "mini-neptune", "planetar", "super-earth", "super-jupiter", "sub-earth"};
                             Planet newPlanet = new Planet();
                             newPlanet.ParentName = inp.Split('[')[1].Split(']')[0];
                             newPlanet.Name = inp.Split('[')[2].Split(']')[0];
-                            newPlanet.Data = inp.Split(']')[2].Trim();
+                            string dat = inp.Split(']')[2].Trim();
+                            if (Array.Exists(posPlTypes, val => val == dat.Remove(dat.Length-3).Trim()))
+                            {
+                                newPlanet.Data = dat;
+                            }
+                            else 
+                            {
+                                newPlanet.Data = "unknown " + dat.Split(' ')[dat.Split(' ').Length - 1];
+                            }
                             planetList.Add(newPlanet);
                                 break;
                         case "moon": 
@@ -101,7 +118,7 @@ namespace ProgrammingPracticeCourseWork
                         Galaxy foundG = galList.Find(g => g.Name == gal);
                         Console.WriteLine($"--- Data for {gal} galaxy ---");
                         Console.WriteLine("Type: " + foundG.Type);
-                        Console.WriteLine("Age: " + foundG.Age);    
+                        Console.WriteLine("Age: " + foundG.age);    
                         Console.WriteLine("Stars: ");
                         if (!starList.Exists(s => s.ParentName == gal)) 
                         {
